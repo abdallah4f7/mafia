@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="80%">
+      <stop offset="0" stop-color="#3a1216"/>
+      <stop offset="1" stop-color="#0f0d12"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <!-- A fedora over a half-lit face. -->
+  <path d="M512 400c-120 0-190 70-190 200 0 150 90 270 190 270s190-120 190-270c0-130-70-200-190-200z" fill="#e8e0d4"/>
+  <path d="M512 400c120 0 190 70 190 200 0 150-90 270-190 270z" fill="#1b1820"/>
+  <ellipse cx="430" cy="590" rx="44" ry="20" fill="#0f0d12"/>
+  <ellipse cx="594" cy="590" rx="44" ry="20" fill="#d23a3a"/>
+  <path d="M440 730q72 34 72 34V730z" fill="#0f0d12" opacity=".75"/>
+  <path d="M340 400c10-130 50-210 110-210 28 0 44 22 62 22s34-22 62-22c60 0 100 80 110 210z" fill="#d23a3a"/>
+  <path d="M338 372h348v50H338z" fill="#0f0d12"/>
+  <path d="M170 440c60-44 190-60 342-60s282 16 342 60c-90 36-210 48-342 48s-252-12-342-48z" fill="#a82828"/>
+</svg>

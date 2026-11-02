@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مافيا</title>
+<meta name="description" content="لعبة مافيا جماعية: العب مع بوتات أو مع ناس أونلاين، على الويب والجوال والكمبيوتر.">
+<link rel="icon" type="image/png" href="icon.png">
+<style>
+  :root { --ink:#0f0d12; --panel:#1b1820; --blood:#d23a3a; --gold:#e2b659; --mist:#a9a3b2; --text:#f4eff0; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; background:var(--ink); color:var(--text);
+    font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic",sans-serif; display:flex; justify-content:center; padding:32px 16px; }
+  main { width:100%; max-width:480px; text-align:center; }
+  img { width:128px; height:128px; border-radius:28px; }
+  h1 { font-size:44px; margin:16px 0 4px; }
+  .tag { color:var(--mist); margin:0 0 28px; font-size:17px; }
+  a.btn { display:flex; align-items:center; justify-content:space-between; gap:12px; text-decoration:none; color:var(--text);
+    background:var(--panel); border-radius:14px; padding:16px 18px; margin-bottom:12px; font-weight:700; font-size:18px; }
+  a.btn small { color:var(--mist); font-weight:400; font-size:14px; }
+  a.btn.main { background:var(--blood); color:#fff; }
+  a.btn.main small { color:#ffe3e3; }
+  a.btn:hover { filter:brightness(1.15); }
+  a:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
+  section { text-align:right; background:var(--panel); border-radius:14px; padding:16px 18px; margin-top:24px; color:var(--mist); line-height:1.8; font-size:15px; }
+  section h2 { color:var(--text); font-size:17px; margin:0 0 6px; }
+  section p { margin:0 0 10px; }
+  section p:last-child { margin:0; }
+  section b { color:var(--text); }
+</style>
+</head>
+<body>
+<main>
+  <img src="icon.png" alt="">
+  <h1>مافيا</h1>
+  <p class="tag">مين فيكم يكذب؟ العبها مع بوتات أو مع ناس أونلاين.</p>
+
+  <a class="btn main" href="app/">العب الحين في المتصفح <small>بدون تحميل</small></a>
+  <a class="btn" href="https://github.com/abdallah4f7/mafia/releases/latest/download/Mafia.apk">حمّل للأندرويد <small>APK</small></a>
+  <a class="btn" href="https://github.com/abdallah4f7/mafia/releases/latest/download/Mafia-Setup.exe">حمّل للكمبيوتر <small>Windows</small></a>
+
+  <section>
+    <h2>ملاحظات التثبيت</h2>
+    <p><b>الآيفون:</b> افتح اللعبة في Safari، واضغط زر المشاركة، ثم «إضافة إلى الشاشة الرئيسية».</p>
+    <p><b>الأندرويد:</b> إذا طلب الجوال السماح بالتثبيت من مصدر غير معروف، وافق عليه لهذا الملف.</p>
+    <p><b>الكمبيوتر:</b> إذا طلعت رسالة Windows الزرقاء، اضغط «مزيد من المعلومات» ثم «تشغيل على أي حال»، لأن الملف غير موقّع بشهادة مدفوعة.</p>
+  </section>
+</main>
+</body>
+</html>
