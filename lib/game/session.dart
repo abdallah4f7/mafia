@@ -214,9 +214,11 @@ class HostSession extends GameSession {
           _botAfter(2, 12, () => _botVote(bot));
         case Phase.day:
           // Spread out over the day, so the talk doesn't all land in one burst.
+          // With no human left to wait for the day is short, so they talk right away.
           final lines = 1 + _random.nextInt(3);
+          final latest = game.phaseComplete ? 3 : 45;
           for (var i = 0; i < lines; i++) {
-            _botAfter(2, 45, () => _botSay(bot));
+            _botAfter(1, latest, () => _botSay(bot));
           }
         default:
           break;

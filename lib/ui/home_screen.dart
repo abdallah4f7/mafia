@@ -1,13 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../update_check.dart';
 import 'quick_match_screen.dart';
 import 'servers_screen.dart';
 import 'setup_screen.dart';
 import 'theme.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.findUpdate = checkForUpdate});
+
+  final Future<AppUpdate?> Function() findUpdate;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,11 +21,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _name = TextEditingController();
   bool _missingName = false;
+  AppUpdate? _update;
+  Timer? _updateTimer;
 
   @override
   void initState() {
     super.initState();
     _loadName();
+    _lookForUpdate();
+    // The game can stay open for a long time, so keep checking. The notice only shows
+    // on this screen, so it never interrupts a game in progress.
+    _updateTimer = Timer.periodic(const Duration(minutes: 30), (_) => _lookForUpdate());
+  }
+
+  Future<void> _lookForUpdate() async {
+    final update = await widget.findUpdate();
+    if (update != null && mounted) setState(() => _update = update);
   }
 
   Future<void> _loadName() async {
@@ -42,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    _updateTimer?.cancel();
     _name.dispose();
     super.dispose();
   }
@@ -80,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(color: mist, fontSize: 16),
                 ),
                 const SizedBox(height: 28),
+                if (_update != null) _UpdateNotice(update: _update!),
                 TextField(
                   controller: _name,
                   maxLength: 20,
@@ -123,6 +141,43 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _UpdateNotice extends StatelessWidget {
+  const _UpdateNotice({required this.update});
+
+  final AppUpdate update;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+        decoration: BoxDecoration(
+          color: panel,
+          border: Border.all(color: gold),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.system_update, color: gold),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'فيه تحديث جديد (${update.version})',
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+            TextButton(
+              onPressed: () => installUpdate(update),
+              child: const Text('حدّث الآن', style: TextStyle(color: gold)),
+            ),
+          ],
         ),
       ),
     );

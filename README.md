@@ -31,3 +31,10 @@ cd desktop; npm install; npm run dist          # ملف تشغيل Windows
 ```
 
 نسخة الكمبيوتر نافذة Electron تفتح نسخة الويب، فأي تحديث في `docs/app` يوصلها تلقائيًا.
+
+## إطلاق إصدار جديد
+اللعبة تقرأ [docs/version.json](docs/version.json) عند الفتح وكل 30 دقيقة، وإذا كان رقمه أكبر من اللي فيها تعرض إشعار التحديث.
+
+1. غيّر الإصدار في `pubspec.yaml` و`lib/update_check.dart` و`desktop/package.json`.
+2. ابنِ النسخ وارفعها في Release جديد.
+3. آخر شيء، غيّر `docs/version.json` وارفعه، عشان ما يوصل الإشعار قبل ما يتوفر الملف الجديد.
