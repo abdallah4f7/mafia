@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win nsis"
+    "dist": "electron-builder --win portable"
   },
   "devDependencies": {
     "electron": "33.2.1",
@@ -19,15 +19,9 @@
     "productName": "Mafia",
     "files": ["main.js", "build/icon.png"],
     "win": {
-      "target": "nsis",
+      "target": "portable",
       "icon": "build/icon.png",
-      "artifactName": "Mafia-Setup.exe"
-    },
-    "nsis": {
-      "oneClick": true,
-      "perMachine": false,
-      "shortcutName": "مافيا",
-      "uninstallDisplayName": "مافيا"
+      "artifactName": "Mafia-Windows.exe"
     }
   }
 }

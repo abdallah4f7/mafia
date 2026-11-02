@@ -57,7 +57,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: windows
-          path: desktop/dist/Mafia-Setup.exe
+          path: desktop/dist/Mafia-Windows.exe
 
   publish:
     needs: [android, windows]
@@ -70,4 +70,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh release create "$GITHUB_REF_NAME" Mafia.apk Mafia-Setup.exe --title "مافيا ${GITHUB_REF_NAME#v}" --notes "حمّل اللعبة من https://abdallah4f7.github.io/mafia/"
+        run: gh release create "$GITHUB_REF_NAME" Mafia.apk Mafia-Windows.exe --title "مافيا ${GITHUB_REF_NAME#v}" --notes "حمّل اللعبة من https://abdallah4f7.github.io/mafia/"

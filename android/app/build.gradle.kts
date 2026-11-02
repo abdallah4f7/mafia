@@ -26,6 +26,11 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Releases carry the game for these only. Without the filter, a 32-bit phone
+        // could install the APK and then crash when opening it.
+        ndk {
+            abiFilters += listOf("arm64-v8a", "x86_64")
+        }
     }
 
     // The release workflow provides the key. A stable key lets a new APK install over

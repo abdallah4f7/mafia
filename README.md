@@ -27,7 +27,7 @@ flutter test                                   # الاختبارات
 $env:LIVE='1'; flutter test test/online_live_test.dart   # اختبار على Supabase الحقيقي
 flutter build apk --release
 flutter build web --release --base-href /mafia/app/ --pwa-strategy=none   # انسخ الناتج إلى docs/app
-cd desktop; npm install; npm run dist          # مثبت Windows
+cd desktop; npm install; npm run dist          # ملف تشغيل Windows
 ```
 
 نسخة الكمبيوتر نافذة Electron تفتح نسخة الويب، فأي تحديث في `docs/app` يوصلها تلقائيًا.
