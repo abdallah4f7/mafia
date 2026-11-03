@@ -145,9 +145,8 @@ class HostSession extends GameSession {
   }
 
   void addBots(int count) {
-    final free = botNames.toList()..shuffle(_random);
     for (var i = 0; i < count; i++) {
-      game.addPlayer('bot-${randomId(6)}', free[i % free.length], isBot: true);
+      game.addPlayer('bot-${randomId(6)}', 'اللاعب ${game.nextSeat}', isBot: true);
     }
   }
 

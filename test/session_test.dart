@@ -22,6 +22,18 @@ void main() {
     session.dispose();
   });
 
+  testWidgets('bots are named after their seat', (tester) async {
+    final session = startBotGame(name: 'أنا', bots: 4, mafiaCount: 1);
+    expect(session.game.players.map((p) => p.name), [
+      'أنا',
+      'اللاعب 2',
+      'اللاعب 3',
+      'اللاعب 4',
+      'اللاعب 5',
+    ]);
+    session.dispose();
+  });
+
   testWidgets('a random room with 5 people starts soon, with no bots', (tester) async {
     final session = quickRoom();
     for (var i = 0; i < 4; i++) {

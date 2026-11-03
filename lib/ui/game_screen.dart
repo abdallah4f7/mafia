@@ -258,7 +258,12 @@ class _GameView {
   String? get selected => phase == 'voting' ? votes[you] as String? : target;
 }
 
-String _label(Map<String, dynamic>? p) => p == null ? '' : '${p['name']} (${p['seat']})';
+/// A bot's name already holds its seat number. People get the number added, since
+/// two of them can share a name.
+String _nameOf(Map<String, dynamic> p) =>
+    p['bot'] == true ? '${p['name']}' : '${p['name']} ${p['seat']}';
+
+String _label(Map<String, dynamic>? p) => p == null ? '' : _nameOf(p);
 
 class _Banner extends StatelessWidget {
   const _Banner({required this.v, required this.session});
@@ -545,8 +550,7 @@ class _PlayerTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        // The seat number tells apart two players with the same name.
-                        '${player['name']} ${player['seat']}',
+                        _nameOf(player),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -689,7 +693,9 @@ class _ChatPanelState extends State<_ChatPanel> {
         TextSpan(
           children: [
             TextSpan(
-              text: '${l['n']} ${l['s']}: ',
+              text: widget.v.playerById(l['id'] as String?)?['bot'] == true
+                  ? '${l['n']}: '
+                  : '${l['n']} ${l['s']}: ',
               style: TextStyle(color: color, fontWeight: FontWeight.w700),
             ),
             TextSpan(text: '${l['t']}'),

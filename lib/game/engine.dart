@@ -89,6 +89,7 @@ class GameEngine {
 
   List<EnginePlayer> get alive => players.where((p) => p.alive).toList();
   bool get isFull => players.length >= maxPlayers;
+  int get nextSeat => _nextSeat;
 
   EnginePlayer addPlayer(String id, String name, {bool isBot = false}) {
     final p = EnginePlayer(id, name, _nextSeat++, isBot: isBot);
