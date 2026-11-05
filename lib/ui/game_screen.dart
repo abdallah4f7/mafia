@@ -9,7 +9,7 @@ import 'theme.dart';
 const roleNames = {
   'mafia': 'مافيا',
   'doctor': 'طبيب',
-  'detective': 'محقق',
+  'detective': 'شايب',
   'citizen': 'مواطن',
 };
 

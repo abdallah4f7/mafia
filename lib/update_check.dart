@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 // Keep these two equal to `version` in pubspec.yaml. A test fails if they drift apart.
-const appVersion = '1.0.3';
-const appBuild = 4;
+const appVersion = '1.0.4';
+const appBuild = 5;
 
 const _versionUrl = 'https://abdallah4f7.github.io/mafia/version.json';
 const _apkUrl = 'https://github.com/abdallah4f7/mafia/releases/latest/download/Mafia.apk';

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../game/engine.dart';
+import '../game/pass_game.dart';
 import '../net/online.dart';
 import 'game_screen.dart';
+import 'pass_game_screen.dart';
 import 'theme.dart';
 
 class BotSetupScreen extends StatefulWidget {
@@ -106,6 +108,119 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
   }
 }
 
+class PassSetupScreen extends StatefulWidget {
+  const PassSetupScreen({super.key});
+
+  @override
+  State<PassSetupScreen> createState() => _PassSetupScreenState();
+}
+
+class _PassSetupScreenState extends State<PassSetupScreen> {
+  final _name = TextEditingController();
+  final _focus = FocusNode();
+  final _names = <String>[];
+  int _mafia = 1;
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _focus.dispose();
+    super.dispose();
+  }
+
+  bool get _typing => _name.text.trim().isNotEmpty;
+
+  void _add() {
+    if (!_typing || _names.length >= maxPlayersLimit) return;
+    setState(() {
+      _names.add(_name.text.trim());
+      _name.clear();
+    });
+  }
+
+  void _remove(int index) {
+    setState(() {
+      _names.removeAt(index);
+      final limit = maxMafiaFor(_pickerTotal);
+      if (_mafia > limit) _mafia = limit;
+    });
+  }
+
+  /// With fewer names than the game needs, the choice is limited as if it had the minimum.
+  int get _pickerTotal => _names.length < minPlayers ? minPlayers : _names.length;
+
+  void _start() {
+    // A name still in the box counts, so nobody gets left out by not pressing add.
+    _add();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => PassGameScreen(pass: PassGame(List.of(_names), _mafia)),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final full = _names.length >= maxPlayersLimit;
+    final count = _names.length + (_typing ? 1 : 0);
+    return _SetupScaffold(
+      title: 'لعب على جوال واحد',
+      children: [
+        TextField(
+          controller: _name,
+          focusNode: _focus,
+          enabled: !full,
+          maxLength: 20,
+          textInputAction: TextInputAction.done,
+          onChanged: (_) => setState(() {}),
+          onSubmitted: (_) {
+            _add();
+            _focus.requestFocus();
+          },
+          decoration: InputDecoration(
+            labelText: 'اسم اللاعب',
+            hintText: 'اكتب الاسم واضغط إضافة',
+            prefixIcon: const Icon(Icons.person),
+            counterText: '',
+            suffixIcon: IconButton(
+              tooltip: 'إضافة',
+              icon: const Icon(Icons.add_circle, color: gold),
+              onPressed: _typing && !full ? _add : null,
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (var i = 0; i < _names.length; i++)
+              InputChip(
+                label: Text(_names[i]),
+                onDeleted: () => _remove(i),
+              ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(
+          count < minPlayers
+              ? 'سجلتوا ${_names.length}، ولازم $minPlayers لاعبين أقل شيء'
+              : 'سجلتوا ${_names.length} من $maxPlayersLimit لاعب',
+          style: const TextStyle(color: mist),
+        ),
+        const SizedBox(height: 24),
+        _MafiaPicker(
+          total: _pickerTotal,
+          value: _mafia,
+          onChanged: (v) => setState(() => _mafia = v),
+        ),
+      ],
+      action: 'ابدأ اللعب',
+      onAction: count >= minPlayers ? _start : null,
+    );
+  }
+}
+
 class _SetupScaffold extends StatelessWidget {
   const _SetupScaffold({
     required this.title,
@@ -117,7 +232,7 @@ class _SetupScaffold extends StatelessWidget {
   final String title;
   final List<Widget> children;
   final String action;
-  final VoidCallback onAction;
+  final VoidCallback? onAction;
 
   @override
   Widget build(BuildContext context) {

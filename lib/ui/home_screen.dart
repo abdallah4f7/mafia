@@ -138,6 +138,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: 'دور السيرفر اللي تبغاه أو حط الكود',
                   onTap: () => _open((n) => ServersScreen(name: n)),
                 ),
+                // Everyone types their own name on the next screen, so this one doesn't ask.
+                _Option(
+                  icon: Icons.phone_android,
+                  title: 'لعب على جوال واحد',
+                  subtitle: 'تسجلون أسماءكم والجوال يدور بينكم',
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const PassSetupScreen()),
+                  ),
+                ),
               ],
             ),
           ),

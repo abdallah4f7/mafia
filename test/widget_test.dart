@@ -18,12 +18,13 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('home shows the four options', (tester) async {
+  testWidgets('home shows all the options', (tester) async {
     await pumpHome(tester);
     expect(find.text('اللعب مع بوتات'), findsOneWidget);
     expect(find.text('دخول عشوائي'), findsOneWidget);
     expect(find.text('إنشاء لعبة'), findsOneWidget);
     expect(find.text('دخول السيرفرات'), findsOneWidget);
+    expect(find.text('لعب على جوال واحد'), findsOneWidget);
   });
 
   testWidgets('no option opens without a name', (tester) async {

@@ -19,7 +19,7 @@ const _accuseLines = [
   'ليش {n} ساكت؟ هذا مريب',
 ];
 
-const _accusedSure = 'أنا المحقق، و{n} مافيا، صوتوا عليه!';
+const _accusedSure = 'أنا الشايب، و{n} مافيا، صوتوا عليه!';
 
 /// How the bots think. They only use what their role could really know, plus a
 /// shared memory of how suspicious each player has looked in public.

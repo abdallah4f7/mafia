@@ -1,7 +1,7 @@
 {
   "name": "mafia",
   "productName": "Mafia",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "لعبة مافيا",
   "author": "abdallah4f7",
   "main": "main.js",
