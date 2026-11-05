@@ -1,0 +1,29 @@
+# Run by hand to record tool/voice_lines.txt in a man's voice. The files it produces
+# go in assets/voice, so every device plays the same voice, even offline.
+name: Record voice
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install edge-tts==7.2.3
+      - name: Record
+        run: |
+          mkdir voice
+          while IFS='|' read -r name text; do
+            [ -n "$name" ] && edge-tts --voice ar-SA-HamedNeural --text "$text" --write-media "voice/$name.mp3"
+          done < tool/voice_lines.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: voice
+          path: voice
