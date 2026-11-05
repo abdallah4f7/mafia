@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -170,6 +171,25 @@ void main() {
     }
   });
 
+  test('every line the game can say has a recording', () {
+    final recorded = File('tool/voice_lines.txt')
+        .readAsLinesSync()
+        .where((l) => l.isNotEmpty)
+        .map((l) => l.split('|').first);
+    for (final line in recorded) {
+      expect(File('assets/voice/$line.mp3').existsSync(), isTrue, reason: line);
+    }
+    expect(
+      recorded,
+      containsAll([
+        for (final role in [Role.mafia, Role.doctor, Role.detective]) 'night_${role.name}',
+        'handoff',
+        'dawn_safe',
+        'dawn_kill',
+      ]),
+    );
+  });
+
   test('shared names get their seat number, others stay plain', () {
     final pass = PassGame(['سارة', 'سارة', 'خالد', 'نورة', 'فهد'], 1);
     expect(pass.label(pass.game.players[0]), 'سارة 1');
@@ -249,8 +269,9 @@ void main() {
       }
       const call = 'المافيا ياخذ الجوال ويحدد من يذبح';
       expect(pass.game.phase, Phase.night);
-      expect(spoken.last, contains('حطوا الجوال بالنص وغمضوا عيونكم'));
-      expect(spoken.last, contains(call));
+      expect(spoken.first, 'handoff');
+      expect(spoken.last, 'night_mafia');
+      expect(find.text('حطوا الجوال بالنص وغمضوا عيونكم'), findsOneWidget);
       expect(find.text(call), findsOneWidget);
       expect(find.byType(ListTile), findsNothing);
 

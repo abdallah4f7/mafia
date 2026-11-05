@@ -1,14 +1,13 @@
-import 'package:flutter_tts/flutter_tts.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-FlutterTts? _tts;
+AudioPlayer? _player;
 
-/// Reads [text] aloud in Arabic. A device without an Arabic voice simply stays quiet:
-/// everything spoken is also on the screen, so this must never get in the way of playing.
-Future<void> speakArabic(String text) async {
+/// Plays a recording from assets/voice, made from tool/voice_lines.txt. Everything
+/// spoken is also on the screen, so a failure here must never get in the way of playing.
+Future<void> playVoice(String line) async {
   try {
-    final tts = _tts ??= FlutterTts();
-    await tts.setLanguage('ar-SA');
-    await tts.stop();
-    await tts.speak(text);
+    final player = _player ??= AudioPlayer();
+    await player.stop();
+    await player.play(AssetSource('voice/$line.mp3'));
   } catch (_) {}
 }

@@ -3,11 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:ota_update/ota_update.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // Keep these two equal to `version` in pubspec.yaml. A test fails if they drift apart.
-const appVersion = '1.0.4';
-const appBuild = 5;
+const appVersion = '1.0.5';
+const appBuild = 6;
 
 const _versionUrl = 'https://abdallah4f7.github.io/mafia/version.json';
 const _apkUrl = 'https://github.com/abdallah4f7/mafia/releases/latest/download/Mafia.apk';
@@ -40,11 +41,26 @@ Future<AppUpdate?> checkForUpdate({http.Client? client, int current = appBuild})
 }
 
 /// The web and Windows versions just reload onto the new web build. The Android app
-/// sends the player to download the new APK, which installs over this one.
-Future<void> installUpdate(AppUpdate update) async {
+/// downloads the new APK itself and opens the system installer, which always asks the
+/// player to confirm. If that fails, the browser download still gets them the update.
+Future<void> installUpdate(AppUpdate update, {void Function(int percent)? onProgress}) async {
   if (kIsWeb) {
     await launchUrl(Uri.parse('$_webUrl?v=${update.build}'), webOnlyWindowName: '_self');
-  } else {
+    return;
+  }
+  try {
+    await for (final event in OtaUpdate().execute(_apkUrl, destinationFilename: 'Mafia.apk')) {
+      switch (event.status) {
+        case OtaStatus.DOWNLOADING:
+          onProgress?.call(int.tryParse(event.value ?? '') ?? 0);
+        case OtaStatus.INSTALLING:
+        case OtaStatus.INSTALLATION_DONE:
+          return;
+        default:
+          throw Exception('${event.status}: ${event.value}');
+      }
+    }
+  } catch (_) {
     await launchUrl(Uri.parse(_apkUrl), mode: LaunchMode.externalApplication);
   }
 }

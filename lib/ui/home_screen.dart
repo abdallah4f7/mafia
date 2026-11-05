@@ -156,13 +156,32 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _UpdateNotice extends StatelessWidget {
+class _UpdateNotice extends StatefulWidget {
   const _UpdateNotice({required this.update});
 
   final AppUpdate update;
 
   @override
+  State<_UpdateNotice> createState() => _UpdateNoticeState();
+}
+
+class _UpdateNoticeState extends State<_UpdateNotice> {
+  int? _percent;
+
+  Future<void> _install() async {
+    setState(() => _percent = 0);
+    await installUpdate(
+      widget.update,
+      onProgress: (percent) {
+        if (mounted) setState(() => _percent = percent);
+      },
+    );
+    if (mounted) setState(() => _percent = null);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final percent = _percent;
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Container(
@@ -178,14 +197,17 @@ class _UpdateNotice extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                'فيه تحديث جديد (${update.version})',
+                percent == null
+                    ? 'فيه تحديث جديد (${widget.update.version})'
+                    : 'جاري التنزيل $percent٪',
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
-            TextButton(
-              onPressed: () => installUpdate(update),
-              child: const Text('حدّث الآن', style: TextStyle(color: gold)),
-            ),
+            if (percent == null)
+              TextButton(
+                onPressed: _install,
+                child: const Text('حدّث الآن', style: TextStyle(color: gold)),
+              ),
           ],
         ),
       ),

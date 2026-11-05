@@ -15,10 +15,10 @@ const _nightCalls = {
 };
 
 class PassGameScreen extends StatefulWidget {
-  const PassGameScreen({super.key, required this.pass, this.speak = speakArabic});
+  const PassGameScreen({super.key, required this.pass, this.speak = playVoice});
 
   final PassGame pass;
-  final Future<void> Function(String text) speak;
+  final Future<void> Function(String line) speak;
 
   @override
   State<PassGameScreen> createState() => _PassGameScreenState();
@@ -45,22 +45,14 @@ class _PassGameScreenState extends State<PassGameScreen> {
   }
 
   /// Says what the room needs to hear, including the people with their eyes closed.
+  /// The voice is recorded, so names only appear on the screen.
   void _announce() {
     final holder = _pass.holder;
     if (holder != null) {
       if (_pass.opened) return;
-      widget.speak(
-        _game.phase == Phase.night
-            ? '$_closeEyes. ${_nightCalls[holder.role]}'
-            : 'عطوا الجوال لـ ${_pass.label(holder)}',
-      );
+      widget.speak(_game.phase == Phase.night ? 'night_${holder.role.name}' : 'handoff');
     } else if (_game.phase == Phase.dawn) {
-      final victim = _game.player(_game.nightVictim);
-      widget.speak(
-        victim == null
-            ? 'افتحوا عيونكم. الحمد لله، ما مات أحد الليلة'
-            : 'افتحوا عيونكم. قتلت المافيا ${_pass.label(victim)}',
-      );
+      widget.speak(_game.nightVictim == null ? 'dawn_safe' : 'dawn_kill');
     }
   }
 
